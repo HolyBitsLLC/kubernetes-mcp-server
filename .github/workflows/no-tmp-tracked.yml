@@ -1,0 +1,24 @@
+name: Enforce Tmp Policy
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  no-tracked-tmp:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fail if tmp files are tracked
+        run: |
+          set -euo pipefail
+          tracked_tmp=$(git ls-files 'tmp' 'tmp/**')
+          if [ -n "$tracked_tmp" ]; then
+            echo "Tracked tmp files found:"
+            echo "$tracked_tmp"
+            exit 1
+          fi
+          echo "OK: no tracked tmp files."
