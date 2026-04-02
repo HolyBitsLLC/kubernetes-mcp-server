@@ -1,9 +1,11 @@
 FROM golang:latest AS builder
+ARG TARGETOS=linux
+ARG TARGETARCH
 
 WORKDIR /app
 
 COPY ./ ./
-RUN make build
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -ldflags="-s -w" -o kubernetes-mcp-server ./cmd/kubernetes-mcp-server
 
 FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
 LABEL io.modelcontextprotocol.server.name="io.github.containers/kubernetes-mcp-server"

@@ -56,7 +56,11 @@ jobs:
   # Check if workflow should run based on trigger
   check-trigger:
     name: Check if evaluation should run
-    runs-on: ubuntu-latest
+    runs-on:
+      - self-hosted
+      - linux
+      - x64
+      - krubecible
     if: |
       github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch' ||
@@ -156,7 +160,11 @@ jobs:
     name: Run MCP Evaluation
     needs: check-trigger
     if: needs.check-trigger.outputs.should-run == 'true'
-    runs-on: ubuntu-latest
+    runs-on:
+      - self-hosted
+      - linux
+      - x64
+      - krubecible
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -257,7 +265,11 @@ jobs:
     needs: [check-trigger, run-evaluation]
     # Only commit results on scheduled runs, not manual dispatch or PR comments
     if: always() && github.event_name == 'schedule' && needs.run-evaluation.result == 'success'
-    runs-on: ubuntu-latest
+    runs-on:
+      - self-hosted
+      - linux
+      - x64
+      - krubecible
     permissions:
       contents: write
       pull-requests: write
