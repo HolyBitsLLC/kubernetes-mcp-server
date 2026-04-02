@@ -10,45 +10,8 @@ jobs:
   image:
     name: Build and Push to Harbor
     if: github.repository != 'containers/kubernetes-mcp-server'
-    runs-on:
-      - self-hosted
-      - linux
-      - krubecible
-      - holybits-shared
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to Harbor
-        uses: docker/login-action@v3
-        with:
-          registry: harbor.dittmanfamily.com
-          username: ${{ secrets.HARBOR_USERNAME }}
-          password: ${{ secrets.HARBOR_PASSWORD }}
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: harbor.dittmanfamily.com/holybitsllc/kubernetes-mcp-server
-          tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=raw,value=main,enable={{is_default_branch}}
-            type=sha,prefix=,format=short
-
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+    uses: HolyBitsLLC/harvester-argo/.github/workflows/reusable-kaniko-build.yaml@main
+    with:
+      image: harbor.dittmanfamily.com/holybitsllc/kubernetes-mcp-server
+      job-prefix: k8s-mcp
+      tags: "latest,main,sha-${{ github.sha }}"
