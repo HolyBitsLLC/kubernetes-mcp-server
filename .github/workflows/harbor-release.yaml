@@ -15,3 +15,4 @@ jobs:
       image: harbor.dittmanfamily.com/holybitsllc/kubernetes-mcp-server
       job-prefix: k8s-mcp
       tags: "latest,main,sha-${{ github.sha }}"
+      platforms: "linux/amd64,linux/arm64"

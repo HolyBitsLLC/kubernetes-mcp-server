@@ -1,4 +1,4 @@
-FROM golang:latest AS builder
+FROM --platform=$BUILDPLATFORM golang:latest AS builder
 ARG TARGETOS=linux
 ARG TARGETARCH
 
