@@ -21,7 +21,11 @@ concurrency:
 jobs:
   validate:
     name: Validate Helm Chart
-    runs-on: ubuntu-latest
+    runs-on:
+      - self-hosted
+      - linux
+      - x64
+      - krubecible
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -39,7 +43,11 @@ jobs:
 
   check-helm-docs:
     name: Check Helm Docs are up-to-date
-    runs-on: ubuntu-latest
+    runs-on:
+      - self-hosted
+      - linux
+      - x64
+      - krubecible
     steps:
       - name: Checkout
         uses: actions/checkout@v6

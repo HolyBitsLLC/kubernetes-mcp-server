@@ -29,7 +29,11 @@ defaults:
 jobs:
   check-format:
     name: Check formatting
-    runs-on: ubuntu-latest
+    runs-on:
+      - self-hosted
+      - linux
+      - x64
+      - krubecible
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -48,7 +52,11 @@ jobs:
 
   check-readme:
     name: Check README is up-to-date
-    runs-on: ubuntu-latest
+    runs-on:
+      - self-hosted
+      - linux
+      - x64
+      - krubecible
     steps:
       - name: Checkout
         uses: actions/checkout@v6

@@ -19,7 +19,11 @@ jobs:
   release:
     name: Release Helm Chart
     if: github.repository == 'containers/kubernetes-mcp-server'
-    runs-on: ubuntu-latest
+    runs-on:
+      - self-hosted
+      - linux
+      - x64
+      - krubecible
     permissions:
       contents: read
       packages: write

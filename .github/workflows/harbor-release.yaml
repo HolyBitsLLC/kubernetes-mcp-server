@@ -1,0 +1,18 @@
+name: Harbor Release
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  image:
+    name: Build and Push to Harbor
+    if: github.repository != 'containers/kubernetes-mcp-server'
+    uses: HolyBitsLLC/harvester-argo/.github/workflows/reusable-kaniko-build.yaml@main
+    with:
+      image: harbor.dittmanfamily.com/holybitsllc/kubernetes-mcp-server
+      job-prefix: k8s-mcp
+      tags: "latest,main,sha-${{ github.sha }}"
+      platforms: "linux/amd64,linux/arm64"
